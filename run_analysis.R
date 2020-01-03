@@ -52,7 +52,7 @@ run_analysis <- function(){
   names(datawithsub) <- c("subject", "activity", "means of means", "means of standard deviation")
 
   #export data sets
-  write.csv(new_data,"means_of_sport_session.csv", row.names = FALSE)
-  write.csv(datawithsub,"means_for_each subject.csv", row.names = FALSE)
+  write.table(new_data,"means_of_sport_session.txt", row.names = FALSE)
+  write.table(datawithsub,"means_for_each subject.txt", row.names = FALSE)
   
 }
