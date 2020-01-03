@@ -12,16 +12,14 @@ run_analysis <- function(){
   #merge the 2 data sets
   bigSet <- rbind(train, test)
   
-  #compute means and standart deviation
-  Means <- data.frame(apply(bigSet, 1, mean))
-  bigSet2 <- bigSet * bigSet
-  Meanof2 <- data.frame(apply(bigSet2, 1, mean))
-  Means2 <- Means*Means
-  tmp <- data.frame(Meanof2 - Means2)
-  stdev <- apply(tmp, 1, sqrt)
+  #add features labels
+  features <- read.table("C:\\Users\\rnoireau\\Downloads\\getdata_projectfiles_UCI HAR Dataset\\UCI HAR Dataset\\features.txt", h = FALSE)
+  names(bigSet) <- features$V2
   
-  #new data set
-  new_data <- cbind(Means, stdev,col)
+  #extract only means and standart derivation
+  keep_info <- grep("*mean|std*",features$V2)
+  new_data <- bigSet[, keep_info]
+  new_data <- cbind(new_data, col)
   
   #get label of activities
   label <- read.table("C:\\Users\\rnoireau\\Downloads\\getdata_projectfiles_UCI HAR Dataset\\UCI HAR Dataset\\activity_labels.txt", h = FALSE)
@@ -30,7 +28,8 @@ run_analysis <- function(){
   new_data <- merge(new_data, label, by = "V1")
 
   #give name to variables
-  names(new_data) <- c("id activity", "means", "standard deviation",  "activity")
+  colnames(new_data)[1] <- "id activity"
+  colnames(new_data)[81] <- "activity"
   
   #read the subject
   subtest <- read.table("C:\\Users\\rnoireau\\Downloads\\getdata_projectfiles_UCI HAR Dataset\\UCI HAR Dataset\\test\\subject_test.txt", h = FALSE)
@@ -45,14 +44,14 @@ run_analysis <- function(){
   library(dplyr)
   datawithsub <- datawithsub %>%
     group_by(V1, activity)  %>%
-    summarise(mean(means),
-              mean(`standard deviation`))
+    summarise_all(mean)
+  #apply(datawithsub[, 2:80],1, 
   
   #give names to variables
-  names(datawithsub) <- c("subject", "activity", "means of means", "means of standard deviation")
-
+  colnames(datawithsub)[1] <- "subject"
+  
   #export data sets
   write.table(new_data,"means_of_sport_session.txt", row.names = FALSE)
-  write.table(datawithsub,"means_for_each subject.txt", row.names = FALSE)
+  write.table(datawithsub,"means_for_each_subject.txt", row.names = FALSE)
   
 }
