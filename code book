@@ -1,0 +1,22 @@
+means_of_sport_session
+  id activity
+    the id of the activity the subject has done
+  means 
+    means for one sport session the subject has done
+  standart derivation
+    stadart derivation for one sport session the subject has done
+  activity
+    the name of the activity the subject has done
+    
+    
+means_for_each_subject
+  subject
+    id of the subject 
+   activity
+    the name of the activity the subject has done
+  means of means 
+    means of all sport session of one activity the subject has done
+  means of standart derivation
+    means of stadart derivation of all sport session of one activity the subject has done
+ 
+    
